@@ -28,7 +28,7 @@ explanation:<br>
 <b>lifeetime</b>, the lifetime of the particle group as a whole (not of each particle) in seconds. example - <i>10 # the particles will be generating for 10 seconds</i><br><br>
 <b>spawn_speed</b>, the frames that the programm will wait until generating a new particle. example - <i>1 # a new particle will be generated each frame</i><br><br>
 		
-<b>full example</b> - <i>master.add_effect(screen, [[0, 0, 0], [255, 255, 255]], [0.2, 0.4], True, [250, 250], [10, 15], True, 0.05, False, 3, 10, 1)</i><br><br>
+<b>full example</b> - master.add_effect(screen, [[0, 0, 0], [255, 255, 255]], [0.2, 0.4], True, [250, 250], [10, 15], True, 0.05, False, 3, 10, 1)<br><br>
 
 the whole script:<br>
 ```python
