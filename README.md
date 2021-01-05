@@ -30,6 +30,8 @@ explanation:<br>
 		
 <b>full example</b> - master.add_effect(screen, [[0, 0, 0], [255, 255, 255]], [0.2, 0.4], True, [250, 250], [10, 15], True, 0.05, False, 3, 10, 1)<br><br>
 
+<img src=>
+
 the whole script:<br>
 ```python
 import pygame
