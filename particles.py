@@ -2,10 +2,11 @@ import pygame as pg
 import sys, random, time
 
 class Particle:
-	def __init__(self, color=[[255, 255, 255], [0, 0, 0]], decrease_by=[0.2, 0.4], follow_mouse=False, pos=[0, 0], radius=[10, 10], rect=False, gravity=0, gray=False):
+	def __init__(self, color=[[255, 255, 255], [0, 0, 0]], decrease_by=[0.2, 0.4], follow_mouse=False, pos=[0, 0], radius=[10, 10], rect=False, gravity=0, gray=False, speed=3):
 		self.particles = []
 
 		self.color = color
+		self.gray = gray
 
 		self.follow_mouse = follow_mouse # position
 		self.pos = pos
@@ -17,7 +18,7 @@ class Particle:
 
 		self.gravity = gravity
 
-		self.gray = gray
+		self.speed = speed
 
 	def emit(self):
 		if self.particles:
@@ -47,8 +48,8 @@ class Particle:
 
 		radius = random.uniform(self.radius[0], self.radius[1])
 
-		direction_x = random.uniform(-3,3)
-		direction_y = random.uniform(-3,3)
+		direction_x = random.uniform(-self.speed, self.speed)
+		direction_y = random.uniform(-self.speed, self.speed)
 
 		color = [0, 0, 0]
 		if self.gray:
@@ -68,12 +69,42 @@ class Particle:
 		particle_copy = [particle for particle in self.particles if particle[1] > 0]
 		self.particles = particle_copy
 
+class ParticleMaster():
+	def __init__(self):
+		self.effects = []
+
+		PARTICLE_EVENT = pg.USEREVENT + 1
+		pg.time.set_timer(PARTICLE_EVENT,40)
+
+	def add_effect(self, color=[[255, 255, 255], [0, 0, 0]], decrease_by=[0.2, 0.4], follow_mouse=False, pos=[0, 0], radius=[10, 10], rect=False, gravity=0, gray=False, speed=3, lifetime=10, spawn_speed=4):
+
+		self.effects.append([Particle(color, decrease_by, follow_mouse, pos, radius, rect, gravity, gray, speed), lifetime, time.time(), spawn_speed, spawn_speed])
+
+		#0 = Particle Obj, 1 = maximum lifetime seconds, 2 = birth seconds, 3 = const spawn speed frames, 4 = time since last spawn frames
+	def update_effects(self):
+		for e in self.effects:
+			e[0].emit() # update
+
+			e[4] += 1 # increase frames since last spawn
+
+			if e[4] >= e[3]: # should spawn a new particle?
+				e[0].add_particles()
+				e[4] = 0
+
+			if time.time() - e[2] > e[1]: # should die?
+				self.effects.remove(e)
+
+
+
+
+
 pg.init()
 screen = pg.display.set_mode((500,500))
 clock = pg.time.Clock()
 
-particle1 = Particle(((0, 0, 0), (255, 255, 255)), (0.2, 0.5), False, (250, 250), (5, 10), True, 0.2, False)
-#particle2 = Particle(screen, 0, 250, 250, (0, 0, 255), 16, False, 1, 1, 1, 2)
+#particle1 = Particle(((0, 0, 0), (255, 255, 255)), (0.2, 0.5), False, (250, 250), (5, 10), True, 0.2, False, 3)
+master = ParticleMaster()
+master.add_effect(((0, 0, 0), (255, 255, 255)), (0.2, 0.5), False, (250, 250), (5, 10), True, 0.2, False, 3, 10, 2)
 
 PARTICLE_EVENT = pg.USEREVENT + 1
 pg.time.set_timer(PARTICLE_EVENT,40)
@@ -84,10 +115,13 @@ while True:
 			pg.quit()
 			sys.exit()
 		if event.type == PARTICLE_EVENT:
-			particle1.add_particles()
-			#particle2.add_particles()
+			#particle1.add_particles()
+			pass
 
 	screen.fill((30,30,30))
-	particle1.emit()
+
+	#particle1.emit()
+	master.update_effects()
+
 	pg.display.update()
 	clock.tick(60)
