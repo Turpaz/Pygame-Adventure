@@ -31,3 +31,27 @@ explanation:<br>
 <b>full example</b> - <i>master.add_effect(screen, [[0, 0, 0], [255, 255, 255]], [0.2, 0.4], True, [250, 250], [10, 15], True, 0.05, False, 3, 10, 1)</i><br><br>
 
 the whole script:<br>
+```python
+from Particles import ParticleMaster
+
+pygame.init()
+screen = pygame.display.set_mode((500,500))
+clock = pygame.time.Clock()
+
+master = ParticleMaster()
+
+master.add_effect(screen, [[0, 0, 0], [255, 255, 255]], [0.2, 0.4], True, [250, 250], [10, 15], True, 0.05, False, 3, 10, 1)
+
+while True:
+	for event in pygame.event.get():
+		if event.type == pygame.QUIT:
+			pygame.quit()
+			sys.exit()
+
+	screen.fill((30,30,30))
+	
+	master.update_effects()
+	
+	pygame.display.update()
+	clock.tick(60)
+```
