@@ -32,7 +32,8 @@ explanation:<br>
 
 the whole script:<br>
 ```python
-from Particles import ParticleMaster
+import pygame
+from particles import ParticleMaster
 
 pygame.init()
 screen = pygame.display.set_mode((500,500))
@@ -40,12 +41,13 @@ clock = pygame.time.Clock()
 
 master = ParticleMaster()
 
-master.add_effect(screen, [[0, 0, 0], [255, 255, 255]], [0.2, 0.4], True, [250, 250], [10, 15], True, 0.05, False, 3, 10, 1)
+master.add_effect(screen, [[0, 0, 0], [255, 255, 255]], [0.2, 0.4], True, [250, 250], [5, 10], True, 0.05, False, 3, 10, 1)
 
 while True:
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT:
 			pygame.quit()
+			exit()
 
 	screen.fill((30,30,30))
 	
