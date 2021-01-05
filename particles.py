@@ -1,9 +1,12 @@
 import pygame as pg
 import sys, random, time
+from settings import *
 
 class Particle:
-	def __init__(self, color=[[255, 255, 255], [0, 0, 0]], decrease_by=[0.2, 0.4], follow_mouse=False, pos=[0, 0], radius=[10, 10], rect=False, gravity=0, gray=False, speed=3):
+	def __init__(self, screen, color=[[255, 255, 255], [0, 0, 0]], decrease_by=[0.2, 0.4], follow_mouse=False, pos=[0, 0], radius=[10, 10], rect=False, gravity=0, gray=False, speed=3):
 		self.particles = []
+
+		self.screen = screen
 
 		self.color = color
 		self.gray = gray
@@ -35,9 +38,9 @@ class Particle:
 				color = particle[3]
 
 				if self.rect:
-					pg.draw.rect(screen, color, (*particle[0], particle[1]*2, particle[1]*2))
+					pg.draw.rect(self.screen, color, (*particle[0], particle[1]*2, particle[1]*2))
 				else:
-					pg.draw.circle(screen, color, [int(particle[0][0]), int(particle[0][1])], int(particle[1]))
+					pg.draw.circle(self.screen, color, [int(particle[0][0]), int(particle[0][1])], int(particle[1]))
 
 	def add_particles(self):
 		pos_x = self.pos[0]
@@ -76,9 +79,9 @@ class ParticleMaster():
 		PARTICLE_EVENT = pg.USEREVENT + 1
 		pg.time.set_timer(PARTICLE_EVENT,40)
 
-	def add_effect(self, color=[[255, 255, 255], [0, 0, 0]], decrease_by=[0.2, 0.4], follow_mouse=False, pos=[0, 0], radius=[10, 10], rect=False, gravity=0, gray=False, speed=3, lifetime=10, spawn_speed=4):
+	def add_effect(self, screen, color=[[255, 255, 255], [0, 0, 0]], decrease_by=[0.2, 0.4], follow_mouse=False, pos=[0, 0], radius=[10, 10], rect=False, gravity=0, gray=False, speed=3, lifetime=10, spawn_speed=4):
 
-		self.effects.append([Particle(color, decrease_by, follow_mouse, pos, radius, rect, gravity, gray, speed), lifetime, time.time(), spawn_speed, spawn_speed])
+		self.effects.append([Particle(screen, color, decrease_by, follow_mouse, pos, radius, rect, gravity, gray, speed), lifetime, time.time(), spawn_speed, spawn_speed])
 
 		#0 = Particle Obj, 1 = maximum lifetime seconds, 2 = birth seconds, 3 = const spawn speed frames, 4 = time since last spawn frames
 	def update_effects(self):
@@ -87,33 +90,12 @@ class ParticleMaster():
 
 			e[4] += 1 # increase frames since last spawn
 
-			if e[4] >= e[3]: # should spawn a new particle?
+			if e[4] >= e[3] and not time.time() - e[2] > e[1]: # should spawn a new particle?
 				e[0].add_particles()
 				e[4] = 0
 
-			if time.time() - e[2] > e[1]: # should die?
+			if time.time() - e[2] > e[1] + (e[0].radius[1] / e[0].decrease_by[1] / FPS): # should die?
 				self.effects.remove(e)
 
-
-
-
-
-pg.init()
-screen = pg.display.set_mode((500,500))
-clock = pg.time.Clock()
-
-master = ParticleMaster()
-master.add_effect(((0, 0, 0), (255, 255, 255)), (0.2, 0.5), False, (250, 250), (5, 10), True, 0.2, False, 3, 10, 2)
-
-while True:
-	for event in pg.event.get():
-		if event.type == pg.QUIT:
-			pg.quit()
-			sys.exit()
-
-	screen.fill((30,30,30))
-
-	master.update_effects()
-
-	pg.display.update()
-	clock.tick(60)
+#master = ParticleMaster()
+#master.add_effect(((0, 0, 0), (255, 255, 255)), (0.2, 0.5), False, (250, 250), (5, 10), True, 0.2, False, 3, 10, 2)
