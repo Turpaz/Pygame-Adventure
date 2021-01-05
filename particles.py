@@ -102,25 +102,17 @@ pg.init()
 screen = pg.display.set_mode((500,500))
 clock = pg.time.Clock()
 
-#particle1 = Particle(((0, 0, 0), (255, 255, 255)), (0.2, 0.5), False, (250, 250), (5, 10), True, 0.2, False, 3)
 master = ParticleMaster()
 master.add_effect(((0, 0, 0), (255, 255, 255)), (0.2, 0.5), False, (250, 250), (5, 10), True, 0.2, False, 3, 10, 2)
-
-PARTICLE_EVENT = pg.USEREVENT + 1
-pg.time.set_timer(PARTICLE_EVENT,40)
 
 while True:
 	for event in pg.event.get():
 		if event.type == pg.QUIT:
 			pg.quit()
 			sys.exit()
-		if event.type == PARTICLE_EVENT:
-			#particle1.add_particles()
-			pass
 
 	screen.fill((30,30,30))
 
-	#particle1.emit()
 	master.update_effects()
 
 	pg.display.update()
