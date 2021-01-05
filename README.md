@@ -30,7 +30,7 @@ explanation:<br>
 		
 <b>full example</b> - master.add_effect(screen, [[0, 0, 0], [255, 255, 255]], [0.2, 0.4], True, [250, 250], [10, 15], True, 0.05, False, 3, 10, 1)<br><br>
 
-<img src=>
+<img src=https://raw.githubusercontent.com/eitan2/pygame_particles/main/%D7%9C%D7%9C%D7%90%20%D7%A9%D7%9D.png>
 
 the whole script:<br>
 ```python
