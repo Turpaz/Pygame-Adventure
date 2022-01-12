@@ -2,16 +2,16 @@
 Python program that contains a class of Particles with customizeable properties such as - shape, color, affected by gravity, lifetime and lots more
 
 to use it just import:<br>
-	<i>from Particles import ParticleMaster</i>
+	```from Particles import ParticleMaster```
 
 and then create the master:<br>
-	<i>master = ParticleMaster()</i><br><br>
+	```master = ParticleMaster()```<br><br>
 
 add an update method in the mainloop:<br>
-	<i>master.update_effects()</i><br><br>
+	```master.update_effects()```<br><br>
   
 then every time you want to add an effect:<br>
-	<i>master.add_effect(screen, color, decrease_by, follow_mouse, pos, radius, rect, gravity, gray, speed, litetime, spawn_speed)</i><br><br>
+	```master.add_effect(screen, color, decrease_by, follow_mouse, pos, radius, rect, gravity, gray, speed, litetime, spawn_speed)```<br><br>
   
 explanation:<br>
     	<b>screen</b>, is the pygame screen. example - <i>screen = pygame.display.set_mode((500,500)) # will create a 500px by 500px window named screen</i><br><br>
@@ -30,7 +30,7 @@ explanation:<br>
 		
 <b>full example</b> - master.add_effect(screen, [[0, 0, 0], [255, 255, 255]], [0.2, 0.4], True, [250, 250], [10, 15], True, 0.05, False, 3, 10, 1)<br><br>
 
-<img src=https://raw.githubusercontent.com/eitan2/pygame_particles/main/%D7%9C%D7%9C%D7%90%20%D7%A9%D7%9D.png>
+<img src=https://github.com/Turpaz/Pygame-Adventure/blob/main/pygame_particles/%D7%9C%D7%9C%D7%90%20%D7%A9%D7%9D.png>
 
 the whole script:<br>
 ```python
